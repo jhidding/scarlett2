@@ -1,0 +1,4 @@
+#!/bin/bash
+
+target="scarlett"
+modules="../common"
