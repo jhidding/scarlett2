@@ -52,6 +52,7 @@ namespace Scarlett
             virtual Ptr  cvf(Ptr)  const { throw Exception(ERROR, "Internal syntax parser."); }
         };
 
+        typedef std::vector<shared_ptr<Command const>> CLst;
         typedef shared_ptr<std::vector<shared_ptr<Command const>>> CLstPtr;
 
         class Context: public Scarlett::Context<char, CLstPtr>

@@ -85,7 +85,7 @@ Ptr Ctx::result() const
 
 CLstPtr get_commands(VRR &rules, char ch)
 {
-    auto x = CLstPtr();
+    auto x = std::make_shared<CLst>();
 
     for (auto const &r : rules)
     {
@@ -112,7 +112,7 @@ CLstPtr get_commands(VRR &rules, char ch)
     throw Exception(ERROR_syntax, "None of the predicates match character: ", ch);
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Command const>>> Ctx::eval(char const &ch) const
+CLstPtr Ctx::eval(char const &ch) const
 {
     return get_commands(rules, ch);
 }
