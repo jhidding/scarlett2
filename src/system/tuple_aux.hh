@@ -1,3 +1,5 @@
+#pragma once
+
 inline void for_each(
     Object::GC const &f, int i,
     Ptr last)

@@ -71,7 +71,7 @@ namespace Scarlett
         { return dynamic_cast<T *>(m); }
 
     inline bool is_nil(Ptr a)
-        { return a != nullptr; }
+        { return a == nullptr; }
 
     template <typename T>
     bool is_type(Ptr a)

@@ -17,7 +17,7 @@ namespace Scarlett
     {
         Ptr parents;
         std::map<Key, Value *> table;
-        
+
     public:
         Environment() {}
 
@@ -45,6 +45,11 @@ namespace Scarlett
             }
 
             return nil;
+        }
+
+        void bind(Key const &name, Value *value)
+        {
+            table[key] = value;
         }
     };
 }

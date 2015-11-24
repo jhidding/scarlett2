@@ -5,24 +5,28 @@ namespace Scarlett
 {
     class Special: public Object
     {
+        std::string const _name;
+
     public:
-        std::string const name;
-
         Special(std::string const &name_):
-            name(name_) {}
+            _name(name_) {}
 
-        /* Type const *type() const; */
+        std::string const &name() const
+            { return _name; }
 
         std::string repr() const
-            { return "#"+name; }
+            { return "#"+_name; }
 
         virtual bool eq(Ptr a) const
             { return equal(a); }
 
         virtual bool equal(Ptr a) const
-            { return cast<Special>(a)->name == name; }
+            { return cast<Special>(a)->name() == name(); }
     };
 
     inline bool is_special(Ptr a)
         { return is_type<Special>(a); }
+
+    inline bool is_ignore(Ptr a)
+        { return is_special(a) and cast<Special>(a)->name() == "ignore"; }
 }

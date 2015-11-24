@@ -1,5 +1,6 @@
 #pragma once
 #include "object.hh"
+#include "atom.hh"
 //#include "../../common/misc/utility.hh"
 #include <tuple>
 #include <stack>
@@ -88,7 +89,7 @@ namespace Scarlett
         { return is_type<Pair>(a); }
 
     inline Ptr list()
-        { return nil; }
+        { return nullptr; }
 
     extern Ptr list_reverse(Ptr);
 
@@ -96,6 +97,10 @@ namespace Scarlett
     Ptr list(Ptr a, Args &&...args)
         { return cons(a, list(std::forward<Args>(args)...)); }
 
+/*    template <typename T, typename ...Args>
+    Ptr list(T a, Args &&...args)
+        { return cons(new Atom<T>(a), list(std::forward<Args>(args)...)); }
+*/
     inline Ptr car(Ptr a) { return std::get<0>(*cast<Pair>(a)); }
     inline Ptr cdr(Ptr a) { return std::get<1>(*cast<Pair>(a)); }
 

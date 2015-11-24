@@ -18,7 +18,7 @@ namespace Scarlett
 
         Cmd apply(Environment *nl_env, Ptr args) const
         {
-            ptr<Environment> new_env(new Environment(
+            auto new_env = new Environment(
                 env, pars, args));
 
             new_env->bind(nle_symb, nl_env);

@@ -17,7 +17,6 @@ Test::Unit _test_read(
         Ptr b = "1 2. 3.456 (42 . 1@1) \"Hello World!\" [a b c d]"_e;
 
         std::cout << repr(a) << std::endl << repr(b) << std::endl;
-        
+
         return true;
-    }
-);
+    });
