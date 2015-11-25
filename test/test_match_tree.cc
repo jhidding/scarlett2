@@ -1,9 +1,9 @@
 #include "../common/test/unittest.hh"
 
+#include "../src/system/numeric.hh"
 #include "../src/system/special.hh"
 #include "../src/system/symbol.hh"
 #include "../src/system/tuple.hh"
-#include "../src/system/atom.hh"
 #include "../src/reader/reader.hh"
 
 #include "../src/algorithm/algorithm.hh"

@@ -1,6 +1,6 @@
 #pragma once
 #include "object.hh"
-#include "atom.hh"
+#include "numeric.hh"
 //#include "../../common/misc/utility.hh"
 #include <tuple>
 #include <stack>

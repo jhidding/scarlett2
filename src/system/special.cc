@@ -2,5 +2,7 @@
 
 using namespace Scarlett;
 
-/* Type const *Scarlett::Special::type() const
-{} */
+#include <memory>
+#include <map>
+
+Global<Special> Scarlett::ignore("ignore", "ignore");

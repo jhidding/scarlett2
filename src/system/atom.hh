@@ -1,5 +1,6 @@
 #pragma once
 #include "object.hh"
+#include <limits>
 
 namespace Scarlett
 {
@@ -18,37 +19,11 @@ namespace Scarlett
             { return cast<AtomBase<T>>(a)->value == value; }
     };
 
-    class Numeric
-    {
-    public:
-        virtual double get_double() const = 0;
-    };
-
     template <typename T>
     class Atom: public AtomBase<T>
     {
     public:
         using AtomBase<T>::AtomBase;
-    };
-
-    template <>
-    class Atom<int>: public AtomBase<int>, public Numeric
-    {
-    public:
-        using AtomBase<int>::AtomBase;
-
-        virtual double get_double() const
-            { return static_cast<double>(this->value); }
-    };
-
-    template <>
-    class Atom<double>: public AtomBase<double>, public Numeric
-    {
-    public:
-        using AtomBase<double>::AtomBase;
-
-        virtual double get_double() const
-            { return this->value; }
     };
 
     template <>
@@ -75,6 +50,5 @@ namespace Scarlett
 
     typedef Atom<std::string> String;
 
-    inline Ptr operator"" _a(unsigned long long a) { return Ptr(new Atom<int>(a)); }
     inline Ptr operator"" _a(char const *a, size_t s) { return Ptr(new Atom<std::string>(a)); }
 }

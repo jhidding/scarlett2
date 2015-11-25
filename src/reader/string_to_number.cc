@@ -3,7 +3,6 @@
 #include "../misc/jregex.hh"
 #include "../system/object.hh"
 #include "../system/tuple.hh"
-#include "../system/atom.hh"
 #include "../system/numeric.hh"
 #include "../numeric/rational.hh"
 
@@ -35,12 +34,12 @@ inline double string_to_double(std::string const &expr)
 inline Ptr match_to_infnan(Misc::Regex_match const &m, unsigned a)
 {
 	if (m[a+1] == "inf")
-		return make_ptr<Atom<double>>(
+		return new Atom<double>(
 			(m[a] == "-" ? -1 : 1) *
 			std::numeric_limits<double>::infinity());
 
 	else
-		return make_ptr<Atom<double>>(
+		return new Atom<double>(
 			std::numeric_limits<double>::quiet_NaN());
 }
 
@@ -53,7 +52,7 @@ inline Ptr match_to_real(Misc::Regex_match const &m, unsigned a, int q = 0)
 		return make_ptr<Atom<int>>(sign * int_part);
 
 	double real = string_to_double(m[a] + m[a+1] + m[a+2] + m[a+3]);
-	return make_ptr<Atom<double>>(real);
+	return new Atom<double>(real);
 }
 
 struct Regex_code
@@ -74,7 +73,7 @@ std::map<std::string, Regex_code> const numeric_regexi = {
 				a = string_to_integer(m[2]),
 				b = string_to_integer(m[3]);
 
-			return make_ptr<Atom<Numeric::rational>>(
+			return new Atom<Numeric::rational>(
 			    Numeric::rational(sign * a, b));
 		}}},
 
@@ -125,4 +124,3 @@ Ptr Scarlett::Reader::string_to_number(std::string const &s)
 
 	throw Exception(ERROR_syntax, "couldn't parse as a number: ", s);
 }
-

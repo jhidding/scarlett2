@@ -5,9 +5,9 @@ target="unittest"
 # directories are found by: `find . -maxdepth 2 -type d -name '[^\.]*'`
 # we may append a _module_ by adding another directory for the search
 # root of find
-modules="../common ../src/reader ../src/misc ../src/numeric ../src/algorithm"
+modules="../common ../src/system ../src/reader ../src/numeric ../src/misc ../src/algorithm"
 
-additions="../src/system/object.cc ../src/system/tuple.cc ../src/system/vector.cc"
+additions=""
 
 # append any needed libraries to ${libs}
 # libs="mylib ${libs}"

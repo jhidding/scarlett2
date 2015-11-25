@@ -50,6 +50,8 @@ namespace Numeric
 
 			int num() const { return a; }
 			int den() const { return b; }
+
+            double to_double() const { return double(a)/b; }
 	};
 
 	inline rational operator*(int a, rational const &b)

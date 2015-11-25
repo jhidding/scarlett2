@@ -1,8 +1,11 @@
 #pragma once
 #include "object.hh"
+#include "../../common/misc/global.hh"
 
 namespace Scarlett
 {
+    using Misc::Global;
+    
     class Special: public Object
     {
         std::string const _name;
@@ -27,6 +30,11 @@ namespace Scarlett
     inline bool is_special(Ptr a)
         { return is_type<Special>(a); }
 
+    extern Global<Special> ignore;
+
+    inline Special const *get_special(std::string const &name)
+        { return Global<Special>::dir().at(name); }
+
     inline bool is_ignore(Ptr a)
-        { return is_special(a) and cast<Special>(a)->name() == "ignore"; }
+        { return a == &ignore; }
 }
