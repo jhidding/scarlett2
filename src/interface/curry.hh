@@ -52,12 +52,12 @@ namespace Scarlett
             Curry(F const &f): foo(f)
             {}
 
-            inline Continuation *apply(Continuation *C, ptr args)
+            inline Continuation *apply(Continuation *C, Ptr args)
             {
-                return C->give(Convert<Ret>::to_ptr(foo()));
+                return C->send(Convert<Ret>::to_ptr(foo()));
             }
 
-            inline Ret call(ptr args)
+            inline Ret call(Ptr args)
             {
                 return foo();
             }
@@ -73,15 +73,15 @@ namespace Scarlett
             Curry(F const &f): foo(f)
             {}
 
-            inline Continuation *apply(Continuation *C,  ptr args)
+            inline Continuation *apply(Continuation *C, Ptr args)
             {
                 if (sizeof...(Rest) != (proper_list_length(args) - 1))
                     throw Exception(ERROR, "wrong number of arguments");
 
-                return C->give(Convert<Ret>::to_ptr(call(args)));
+                return C->send(Convert<Ret>::to_ptr(call(args)));
             }
 
-            inline Ret call(ptr args)
+            inline Ret call(Ptr args)
             {
                 return Curry<Ret, Rest...>(
                     bind_1st<Ret, Arg, Rest...>(

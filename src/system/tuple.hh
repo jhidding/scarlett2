@@ -97,6 +97,7 @@ namespace Scarlett
     Ptr list(Ptr a, Args &&...args)
         { return cons(a, list(std::forward<Args>(args)...)); }
 
+
 /*    template <typename T, typename ...Args>
     Ptr list(T a, Args &&...args)
         { return cons(new Atom<T>(a), list(std::forward<Args>(args)...)); }

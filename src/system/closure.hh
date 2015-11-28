@@ -16,14 +16,15 @@ namespace Scarlett
         Closure(Environment *env_, Ptr nl_, Ptr pars_, Ptr body_):
             env(env_), nle_symb(nl_), pars(pars_), body(body_) {}
 
-        Cmd apply(Environment *nl_env, Ptr args) const
+        Continuation *apply(Continuation *c, Ptr args) const
         {
             auto new_env = new Environment(
                 env, pars, args));
 
+            Environment *nl_env = c->environment();
             new_env->bind(nle_symb, nl_env);
 
-            return c_sibling_seq(new_env, body);
+            return c->seq(new_env, body);
         }
     };
 
@@ -42,12 +43,12 @@ namespace Scarlett
         Closure(Environment *env_, Ptr pars_, Ptr body_):
             env(env_), pars(pars_), body(body_) {}
 
-        Cmd apply(Ptr args) const
+        Continuation *apply(Continuation *c, Ptr args) const
         {
             auto new_env = new Environment(
                 env, match_tree(pars, args));
 
-            return c_sibling_seq(new_env, body);
+            return c->seq(new_env, body);
         }
     };
 

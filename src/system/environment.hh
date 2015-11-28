@@ -1,7 +1,6 @@
 #pragma once
 #include "object.hh"
 #include "tuple.hh"
-#include "string_utility.hh"
 #include <map>
 #include <string>
 
@@ -35,21 +34,19 @@ namespace Scarlett
             if (table.count(name) == 1)
                 return table.at(name);
 
-            Ptr *p = parents;
-            while (is_pair(p))
+            for (Ptr p : parents)
             {
-                Value *q = cast<Environment>(car(p))->look_up(name);
+                Value *q = cast<Environment>(p)->look_up(name);
                 if (not is_null(q))
                     return q;
-                p = cdr(p);
             }
 
-            return nil;
+            return nullptr;
         }
 
         void bind(Key const &name, Value *value)
         {
-            table[key] = value;
+            table[name] = value;
         }
     };
 }
