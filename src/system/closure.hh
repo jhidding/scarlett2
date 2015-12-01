@@ -5,7 +5,7 @@
 
 namespace Scarlett
 {
-    class OperativeClosure: public Operative
+    class Closure: public Operative
     {
         Environment     *env;
         Ptr              nle_symb;
@@ -24,7 +24,7 @@ namespace Scarlett
             Environment *nl_env = c->environment();
             new_env->bind(nle_symb, nl_env);
 
-            return c->seq(new_env, body);
+            return link(seq_eval(new_env, body), c);
         }
     };
 
@@ -48,7 +48,7 @@ namespace Scarlett
             auto new_env = new Environment(
                 env, match_tree(pars, args));
 
-            return c->seq(new_env, body);
+            return link(seq_eval(new_env, body), c);
         }
     };
 
@@ -60,16 +60,16 @@ namespace Scarlett
     class C_Closure: public Applicative
     {
 //        Ptr capture;
-        std::function<Cmd (Ptr)> f;
+        std::function<Continuation *(Continuation *,Ptr)> f;
 
     public:
         template <typename T>
         C_Closure(T const &f_):
             f(f_) {}
 
-        Cmd apply(Ptr p) const
+        Continuation *apply(Continuation *c, Ptr p) const
         {
-            return f(p);
+            return f(c, p);
         }
     };
 

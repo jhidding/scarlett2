@@ -63,6 +63,7 @@ namespace Scarlett
                               "Reached the root continuation."); }
     };
 
+    /*! Applies a function */
     class Apply: public Continuation
     {
         Combiner *f;

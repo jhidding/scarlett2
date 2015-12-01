@@ -6,3 +6,4 @@ using namespace Scarlett;
 #include <map>
 
 Global<Special> Scarlett::ignore("ignore", "ignore");
+Global<Special> Scarlett::undefined("undefined", "undefined");

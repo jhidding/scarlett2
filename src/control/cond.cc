@@ -2,22 +2,22 @@
 
 using namespace Scarlett;
 
-Cmd scrope_cond(ptr<Environment> env, Ptr a)
+Continuation *f_cond(Continuation *c, Ptr a)
 {
-    if (is_nil(a))
-        return c_value(undefined);
-    
+    if (a == nullptr)
+        return c->send(&undefined);
+
     Ptr pred = caar(a),
         expr = cdar(a),
         rest = cdr(a);
-    
-    return c_exec(env,
-        c_eval(pred),
-        c_apply(c_applicative([env, expr, rest] (Ptr args)
+
+    Environment *env = c->environment();
+
+    return link(
+        eval(pred),
+        lambda([expr, rest] (Continuation *c, Ptr a)
         {
-            if (args)
-                return c_eval_seq(env, expr);
-            else
-                return scrope_cond(env, rest);
-        })));
+            return (is_not_false(a) ? link(eval(expr), c)
+                                    : return f_cond(c, rest));
+        }), c);
 }

@@ -5,7 +5,7 @@
 namespace Scarlett
 {
     using Misc::Global;
-    
+
     class Special: public Object
     {
         std::string const _name;
@@ -31,6 +31,7 @@ namespace Scarlett
         { return is_type<Special>(a); }
 
     extern Global<Special> ignore;
+    extern Global<Special> undefined;
 
     inline Special const *get_special(std::string const &name)
         { return Global<Special>::dir().at(name); }
