@@ -31,7 +31,7 @@ Test::Unit _test_list(
         assert(is_pair(a));
         assert(is_proper_list(a));
 
-        Ptr b = list_reverse(a);
+        Ptr b = reverse(a);
         assert(is_proper_list(b));
         assert(b->equal(list("hoedje van"_a, "hoedje van"_a, 4_a, 3_a, 2_a, 1_a)));
 

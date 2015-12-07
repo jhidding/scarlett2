@@ -38,5 +38,5 @@ namespace Scarlett
         ListIterator end() { return ListIterator(nil); }
     };
 
-    ListRange iter(Ptr a) { return ListRange(a); }
+    inline ListRange iter(Ptr a) { return ListRange(a); }
 }

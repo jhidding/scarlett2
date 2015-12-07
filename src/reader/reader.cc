@@ -12,7 +12,7 @@ using Ctx = Scarlett::Reader::Context;
 
 Ptr Scarlett::read(std::string const &s)
 {
-    return list_reverse(run_context<Ctx>(s, 0, list_rules));
+    return reverse(run_context<Ctx>(s, 0, list_rules));
 }
 
 /*! \namespace Reader

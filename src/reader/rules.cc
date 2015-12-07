@@ -53,7 +53,7 @@ Ptr alt_improper_list_reverse(Ptr p)
 
 Ptr alt_list_reverse(Ptr p)
 {
-    return cons("list"_s, list_reverse(p));
+    return cons("list"_s, reverse(p));
 }
 
 Ptr reverse_list_to_vector(Ptr p)
@@ -125,7 +125,7 @@ VRR Scarlett::Reader::common_rules = {
 
 VRR Scarlett::Reader::list_rules = {
     {equals(']'),  {cmd_parse_error()}},
-    {equals(')'),  {cmd_parent_context(&list_reverse)}},
+    {equals(')'),  {cmd_parent_context(&reverse)}},
     {equals('.'),  {cmd_sub_context(&dot_rules)}},
     {otherwise,    {cmd_delegate(&common_rules)}}
 };

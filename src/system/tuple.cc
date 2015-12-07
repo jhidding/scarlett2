@@ -38,7 +38,7 @@ std::string Scarlett::repr(Ptr a)
         return "()";
 }
 
-Ptr Scarlett::list_reverse(Ptr p)
+Ptr Scarlett::reverse(Ptr p)
 {
     Ptr s = nil;
 

@@ -1,47 +1,48 @@
 #include "control.hh"
+#include "link.hh"
+#include "../system/tuple.hh"
+#include "closure.hh"
 
 using namespace Scarlett;
 
-/* bit of wishful programming here
-   (let ((a make-a-expr)
-         ((b c) make-bc-expr))
-     body)
-     
-  translates to
-   (apply (lambda  (a (b c)) body)
-          (list make-a-expr make-bc-expr))
- */
-
-/* using:
-    c_eval to have a list of expressions evaluated
-    c_apply the stack list to a function
-    make_closure to do Ptr(new Closure(...))
- */
-Cmd scrope_let(ptr<Environment> env, Ptr a)
+Continuation *f_let(Continuation *c, Ptr a)
 {
-    Ptr defines  = car(a),
-        body     = cadr(a);
-  
-    return c_eval(env, cons(
-        make_closure(env, list_map(car, defines), body),
-        list_map(cadr, defines)));
+    if (is_symbol(car(a))) {
+        return f_named_let(c, a);
+    }
+
+    Ptr args = map_reverse(car, car(a)),
+        vals = map_reverse(cdr, car(a)),
+        body = cadr(a);
+
+    return c << seq_eval(body) << bind_to(args) << map_eval(vals);
 }
 
-/* let* can be implemented as a series of nested let */
-Cmd scrope_let_star(ptr<Environment> env, Ptr a)
+Continuation *f_let_star(Continuation *c, Ptr a)
 {
-    Ptr defines = car(a),
-        body    = cadr(a);
+    Ptr args = map_reverse(car, car(a)),
+        vals = map_reverse(cdr, car(a)),
+        body = cadr(a);
 
-    ptr<Environment> new_env(new Environment(list(env)));
-        
-    return 
+    c = (c << seq_eval(body))->new_env();
+
+    while (args)
+    {
+        c = c << bind_to(car(args)) << eval(car(vals));
+        args = cdr(args);
+        vals = cdr(vals);
+    }
+
+    return c;
 }
 
-/*
-    return c_exec(new_env,
-        c_push(list_map(car, defines)),
-        c_eval(new_env, list_map(cdr, defines)),
-        c_apply(scm_define),
-        c_eval_tail(new_env, body));
-*/
+Continuation *f_named_let(Continuation *c, Ptr a)
+{
+    Ptr name = car(a),
+        args = map(car, cadr(a)),
+        vals = map(cdr, cadr(a)),
+        body = caddr(a);
+
+    return ((c << call(name))->new_env() << map_eval(vals))
+        ->bind(name, new ApplicativeClosure(c->environment(), args, body));
+}

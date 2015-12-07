@@ -1,11 +1,8 @@
 #include "control.hh"
+#include "link.hh"
 
 using namespace Scarlett;
 
-Cmd scrope_define(ptr<Environment> env, Ptr a)
-{
-    Ptr symbol_tree = car(a),
-        expr        = cadr(b);
-        
-    return c_define(symbol_tree, expr);
+Continuation *Scarlett::f_define(Continuation *c, Ptr args) {
+    return c << bind_to(car(args)) << eval(cdr(args));
 }

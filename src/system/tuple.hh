@@ -91,17 +91,14 @@ namespace Scarlett
     inline Ptr list()
         { return nullptr; }
 
-    extern Ptr list_reverse(Ptr);
+    extern Ptr reverse(Ptr);
+
+
 
     template <typename ...Args>
     Ptr list(Ptr a, Args &&...args)
         { return cons(a, list(std::forward<Args>(args)...)); }
 
-
-/*    template <typename T, typename ...Args>
-    Ptr list(T a, Args &&...args)
-        { return cons(new Atom<T>(a), list(std::forward<Args>(args)...)); }
-*/
     inline Ptr car(Ptr a) { return std::get<0>(*cast<Pair>(a)); }
     inline Ptr cdr(Ptr a) { return std::get<1>(*cast<Pair>(a)); }
 
@@ -135,4 +132,19 @@ namespace Scarlett
     inline Ptr cdaddr(Ptr p) { return cdr(caddr(p)); }
     inline Ptr cadddr(Ptr p) { return car(cdddr(p)); }
     inline Ptr cddddr(Ptr p) { return cdr(cdddr(p)); }
+
+    template <typename F>
+    Ptr map_reverse(F f, Ptr p) {
+        Ptr r = nullptr;
+        while (p) {
+            r = cons(f(car(p)), r);
+        }
+        return r;
+    }
+
+    template <typename F>
+    Ptr map(F f, Ptr p)
+    {
+        return reverse(map_reverse(f, p));
+    }
 }

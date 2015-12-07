@@ -1,12 +1,15 @@
 #include "control.hh"
+#include "closure.hh"
 
 using namespace Scarlett;
 
-Cmd scrope_lambda(ptr<Environment> env, Ptr a)
-{
-    Ptr par_tree = car(a),
-        body     = cadr(a);
-        
-    return c_value(make_applicative_closure(env, par_tree, body));
+Continuation *Scarlett::f_lambda(Continuation *c, Ptr args) {
+    Ptr pars = car(args),
+        body = cadr(args);
+
+    return c->send(new ApplicativeClosure(c->environment(), pars, body));
 }
 
+Continuation *Scarlett::f_case_lambda(Continuation *c, Ptr args) {
+    return c->send(new CaseLambda(c->environment(), args));
+}

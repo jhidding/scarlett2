@@ -8,3 +8,4 @@ namespace Scarlett
         Ptr a_, Ptr b_,
         std::function<void (Symbol const *, Ptr)> const &f);
 }
+

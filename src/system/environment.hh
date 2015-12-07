@@ -1,6 +1,7 @@
 #pragma once
 #include "object.hh"
 #include "tuple.hh"
+#include "../interface/iter.hh"
 #include <map>
 #include <string>
 
@@ -11,42 +12,48 @@ namespace Scarlett
      * A map with pointers to Object instances. If a name is not
      * found in the map, look-up deeper in hierarchy.
      */
-    template <typename Key = string, typename Value = Object const>
     class Environment: public Object
     {
         Ptr parents;
-        std::map<Key, Value *> table;
+        std::map<std::string, Ptr> table;
 
     public:
         Environment() {}
 
         /*! \brief Constructor */
-        Environment(
-                Ptr parents_,
-                std::map<Key, Value *> const &table_):
-            parents(parents_),
-            table(table_)
-        {}
+        Environment(Ptr parents_):
+            parents(parents_) {}
 
         /*! \brief Look-up method */
-        Value *look_up(Key const &name) const
-        {
+        Ptr look_up(std::string const &name) const {
             if (table.count(name) == 1)
                 return table.at(name);
 
-            for (Ptr p : parents)
-            {
-                Value *q = cast<Environment>(p)->look_up(name);
-                if (not is_null(q))
+            for (Ptr p : iter(parents)) {
+                try {
+                    Ptr q = cast<Environment>(p)->look_up(name);
                     return q;
+                } catch(...) {}
             }
 
-            return nullptr;
+            throw Exception(ERROR_lookup);
         }
 
-        void bind(Key const &name, Value *value)
-        {
+        void bind(std::string const &name, Ptr value) {
             table[name] = value;
         }
+    };
+
+    /* We never handle an environment directly from the interpreter,
+       Since we want to keep things const as much as possible.
+       This object wraps a mutable environment pointer. */
+    class CapturedEnvironment: public Object {
+        Environment *env;
+
+    public:
+        CapturedEnvironment(Environment *env_):
+            env(env_) {}
+
+        Environment *get() const { return env; }
     };
 }

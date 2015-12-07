@@ -9,7 +9,7 @@ namespace Scarlett
 
     enum ErrNo { ERROR, ERROR_memory, ERROR_bound, ERROR_unbound, ERROR_match,
                  ERROR_type, ERROR_fail, ERROR_syntax, ERROR_ni,
-                 ERROR_runtime };
+                 ERROR_runtime, ERROR_lookup };
 
     class Exception: public std::exception
     {
